@@ -1,27 +1,15 @@
-LOAD T1,10
-LOAD R1,T1
-LOAD A1,30
-STORE R1,[A1]
-DEBUG R1
-LOAD T1,0
-LOAD R1,T1
-STORE R1,[0]
-LOAD T1,1
-LOAD R1,T1
-STORE R1,[1]
-LOAD A1,0
-LOAD R1,[A1]
-LOAD T1,1
-ADD A1,A1,1
-LOAD R2,[A1]
-ADD R3,R1,R2
-ADD A1,A1,1
-STORE R3,[A1]
-LOAD A1,30
-DEBUG A1
-LOAD R1,[A1]
-DEBUG R1
-SUB R1,R1,1
-LOAD T1,0
-JMP R1,T1,11
+LOAD R1,0			
+STORE R1,[0]		#Store "0" in [0]
+LOAD R1,1
+STORE R1,[1]		#store "1" in [1]
+LOAD A1,1			
+LOAD R1,[A1]		#Load Element at memory location, lets say x
+SUB A1,A1,1		
+LOAD R2,[A1]		#Load Element at x-1
+ADD R3,R1,R2		#Add them together
+ADD A1,A1,2			
+STORE R3,[A1]		#Store them at x+1
+CMP A1,20			#Check if the increment counter value is 20
+LOAD A2,6
+JMP F1,0,A2			#Check if the previous Comparison is false, then go to line 6 Loaded in previous line
 HALT

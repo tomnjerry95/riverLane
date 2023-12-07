@@ -14,10 +14,13 @@ enum instructions {
 	HALT,
 	DEBUG
 };
-
+const int RAM_SIZE = 100;
+/**
+ * Class for implementing the RISC machine.
+ */
 class RISC
 {
-public:
+private:
 	int R1 =0; //Operand
 	int R2 = 0;
 	int R3 = 0;
@@ -31,13 +34,13 @@ public:
 	//int operationNum?;
 public:
 	RISC(int* x, string* y, int length);
-	int getOperationFromString(string operationString);
-	int parseInstruction(string textToParse);
-	void getOperands(string opString, int**);
+	int GetOperationFromString(string operationString);
+	int ParseInstruction(string textToParse);
+	void GetOperands(string opString, int**);
 	void incrementPC() { PC++; };
 	void resetPC() { PC = 0; };
-	void executeInstruction(string instruction, string op1String, string op2String, string op3String);
-	void simulateMachine();
+	void ExecuteInstruction(string instruction, string op1String, string op2String, string op3String);
+	void SimulateMachine();
 	void printRegisters();
-
+	void PrintMemory();
 };

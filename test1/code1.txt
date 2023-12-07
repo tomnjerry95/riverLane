@@ -1,0 +1,12 @@
+LOAD R1,3				#Code to Implement Multiplication
+LOAD R2,5
+LOAD R3,R1
+ADD R3,R3,R1
+DEBUG R3
+DEBUG R1
+SUB R2,R2,1
+CMP R2,1
+LOAD A1,4
+JMP F1,0,A1
+STORE R3,[0]
+HALT

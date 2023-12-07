@@ -11,14 +11,20 @@ RISC::RISC(int* _ram, string* _flash, int codeSize)
 {
 	PC = 0;
 	//memcpy(RAM, _ram, 10 * sizeof(int));
-	for (int i = 0;i < 100;i++)
+	for (int i = 0;i < RAM_SIZE;i++)
 		RAM[i] = 0;
 	for (int i = 0;i < codeSize;i++)
 	{
 		FLASH[i] = _flash[i];
 	}
 }
-int RISC::getOperationFromString(string operationString)
+/**
+ * Function to find the operation from the string
+ * 
+ * \param operationString String of the operation
+ * \return 
+ */
+int RISC::GetOperationFromString(string operationString)
 {
 	int _operationNum = 0;
 	if (operationString.compare("LOAD") == 0)//(operationString, "LOAD") == 0)
@@ -69,7 +75,7 @@ int RISC::getOperationFromString(string operationString)
 *     ADD R1,T0,T1 //R1 = T0+T1
 * Returns Enum for the instruction
 */
-int RISC::parseInstruction(string textToParse)
+int RISC::ParseInstruction(string textToParse)
 {
 	int i = 0, commaIndex;
 	int j = 0;
@@ -91,12 +97,26 @@ int RISC::parseInstruction(string textToParse)
 		getline(iss, operandString[i++], ',');
 	}
 
-	cout << "Operation: " << operationString << "Operand 1:" << operandString[0] << ',' << operandString[1] << ',' << operandString[2] << endl;
-	executeInstruction(operationString, operandString[0], operandString[1], operandString[2]);
+	ExecuteInstruction(operationString, operandString[0], operandString[1], operandString[2]);
 	return operationNum;
 }
-void RISC::getOperands(string opString, int** operandPtr)
+/**
+ * Get the operand from the String.
+ * 
+ * \param opString String of operand
+ * \param operandPtr	Returns a pointer that points to the Specific register in the machine
+ */
+void RISC::GetOperands(string opString, int** operandPtr)
 {
+	int isMemLocation = 0;
+	int* memLocation;
+	if ((opString.front() == '[') && (opString.back() == ']')) //Mem locations are enclosed with []
+	{
+		//Is Memory Location
+		isMemLocation = true;
+		opString = (opString.substr(1, opString.size() - 2));
+	}
+
 	if (opString.compare("R1") == 0)
 	{
 		*operandPtr = &R1;
@@ -137,14 +157,13 @@ void RISC::getOperands(string opString, int** operandPtr)
 	{
 		*operandPtr = &A4;
 	}
-	else if ((opString.front() == '[') && (opString.back() == ']'))
-	{
-		//int memLocation = stoi(opString.substr(1, opString.size() - 2));
-		//T1 = stoi(opString);
-		//*operandPtr = &RAM[memLocation];
-		getOperands(opString.substr(1, opString.size() - 2), operandPtr);
-
-	}
+	//{
+	//	//is Address
+	//	//int memLocation = stoi(opString.substr(1, opString.size() - 2));
+	//	//T1 = stoi(opString);
+	//	//*operandPtr = &RAM[memLocation];
+	//	getOperands(opString.substr(1, opString.size() - 2), operandPtr);
+	//}
 	else
 	{
 		//Operand will be an integer
@@ -160,53 +179,67 @@ void RISC::getOperands(string opString, int** operandPtr)
 			*operandPtr = &T1;
 		}
 	}
-
+	if (isMemLocation)
+	{
+		int test = 0;
+		test = 1;
+		*operandPtr = &RAM[**operandPtr];
+	}
 	//return operand;
 
 }
 
-void RISC::executeInstruction(string instruction, string op1String, string op2String, string op3String)
+/**
+ * Executes the instructions provided in the arguments.
+ * 
+ * \param instruction The operation as a string
+ * \param op1String	Operand 1 as a string
+ * \param op2String	Operand 2 as a string
+ * \param op3String	Operand 3 as a string
+ */
+void RISC::ExecuteInstruction(string instruction, string op1String, string op2String, string op3String)
 {
 	int* op1 = &R1, * op2 = &R1, * op3 = &R1;
-	switch (getOperationFromString(instruction))
+	switch (GetOperationFromString(instruction))
 	{
 	case LOAD:
-		//For load operation, eg. LOAD R1,10 , we need to load a value from memory location 10 ro 
-		getOperands(op1String, &op1);
-		getOperands(op2String, &op2);
+		//For load operation, eg. LOAD R1,10 
+		GetOperands(op1String, &op1);
+		GetOperands(op2String, &op2);
 		*op1 = *op2;
+		//cout << "Operation: LOAD";
 		PC++;
 		break;
 	case ADD:
-		//For load operation, eg. LOAD R1,10 , we need to load a value from memory location 10 ro 
-		getOperands(op1String, &op1);
-		getOperands(op2String, &op2);
-		getOperands(op3String, &op3);
+		//For Add operation. Eg. ADD R1,1 or ADD R1,R2,R3 =>R1 = R2+R3
+		GetOperands(op1String, &op1);
+		GetOperands(op2String, &op2);
+		GetOperands(op3String, &op3);
 		*op1 = *op2 + *op3;
 		PC++;
 		break;
 	case SUB:
-		//For load operation, eg. LOAD R1,10 , we need to load a value from memory location 10 ro 
-		getOperands(op1String, &op1);
-		getOperands(op2String, &op2);
-		getOperands(op3String, &op3);
+		//For SUbtraction operation. Eg. SUB R1,R2,R3 => R1 = R2-R3
+		GetOperands(op1String, &op1);
+		GetOperands(op2String, &op2);
+		GetOperands(op3String, &op3);
 		*op1 = *op2 - *op3;
 		PC++;
 		break;
 	case STORE:
 		//For load operation, eg. LOAD R1,10 , we need to load a value from memory location 10 ro 
-		getOperands(op1String, &op1);
-		getOperands(op2String, &op2);
-		RAM[*op2] = *op1;
+		GetOperands(op1String, &op1);
+		GetOperands(op2String, &op2);
+		*op2 = *op1;
 		PC++;
 		break;
 	case JMP:
-		getOperands(op1String, &op1);
-		getOperands(op2String, &op2);
-		getOperands(op3String, &op3);
+		GetOperands(op1String, &op1);
+		GetOperands(op2String, &op2);
+		GetOperands(op3String, &op3);
 		if (*op1 == *op2)
 		{
-			PC = *op3;
+			PC = *op3-1;
 		}
 		else
 			PC++;
@@ -215,8 +248,8 @@ void RISC::executeInstruction(string instruction, string op1String, string op2St
 		PC = 10000;
 		break;
 	case CMP:
-		getOperands(op1String, &op1);
-		getOperands(op2String, &op2);
+		GetOperands(op1String, &op1);
+		GetOperands(op2String, &op2);
 		if (*op1 == *op2)
 		{
 			F1 = 1; //Set Flag
@@ -228,8 +261,11 @@ void RISC::executeInstruction(string instruction, string op1String, string op2St
 		PC++;
 		break;
 	case DEBUG:
-		getOperands(op1String, &op1);
+		GetOperands(op1String, &op1);
 		cout << "Value is:"<< * op1<<endl;
+		PC++;
+		break;
+	case NOP:
 		PC++;
 		break;
 	default:
@@ -237,13 +273,28 @@ void RISC::executeInstruction(string instruction, string op1String, string op2St
 
 	}
 }
-void RISC::simulateMachine()
+/**
+ * The main siimulation code that runs the machine.
+ * 
+ */
+void RISC::SimulateMachine()
 {
 	while(PC!= 10000)
-		parseInstruction(FLASH[PC]);
+		ParseInstruction(FLASH[PC]);
 }
 void RISC::printRegisters()
 {
 	cout << "R1: " << R1 << " R2: " << R2 << " R3: "<<R3<<" F1: " << F1<<endl;
 
+}
+/**
+ * API To Print memory in the RAM.
+ * 
+ */
+void RISC::PrintMemory()
+{
+	for (int i = 0;i < RAM_SIZE;i++)
+	{
+		cout << RAM[i]<<" ";
+	}
 }
