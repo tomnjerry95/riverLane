@@ -1,2 +1,3 @@
-﻿  test1.cpp
+﻿  RISC.cpp
+C:\Users\Jerin\source\repos\test1\test1\RISC.cpp(74,13): warning C4101: 'commaIndex': unreferenced local variable
   test1.vcxproj -> C:\Users\Jerin\source\repos\test1\x64\Debug\test1.exe
