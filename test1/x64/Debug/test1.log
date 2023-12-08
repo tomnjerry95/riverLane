@@ -1,7 +1,7 @@
 ﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(534,5): warning MSB8028: The intermediate directory (x64\Debug\) contains files shared from another project (test1.vcxproj).  This can lead to incorrect clean and rebuild behavior.
   RISC.cpp
-C:\Users\Jerin\source\repos\test1\test1\RISC.cpp(74,13): warning C4101: 'commaIndex': unreferenced local variable
-C:\Users\Jerin\source\repos\test1\test1\RISC.cpp(100,7): warning C4101: 'memLocation': unreferenced local variable
+C:\Users\Jerin\source\repos\test1\test1\RISC.cpp(80,13): warning C4101: 'commaIndex': unreferenced local variable
+C:\Users\Jerin\source\repos\test1\test1\RISC.cpp(112,7): warning C4101: 'memLocation': unreferenced local variable
   main.cpp
 C:\Users\Jerin\source\repos\test1\test1\main.cpp(66,6): warning C4101: 'i': unreferenced local variable
   Generating Code...
