@@ -39,6 +39,8 @@ Eg. ADD R3,R1,R2 can be denoted as 0x1312 . 0x1 - Add, 0x3-R3, 0x2-R1, 0x1-R1. D
 The code has developed in Microsoft Visual Studio 2022 v143. In order to run and build the project, simply open the solution in Visual studio and run the project.
 Prior to running the code, provide your assembly code in the format code.txt and save it in the root directory to execute it.
 
+Sample output screenshot can look like(Fibbonacci series generation):
+![Output](output.png)
 ## ADDITIONAL INSTRCTIONS ##
 
 Additional instructions have also been added
