@@ -17,6 +17,9 @@ Address Register A1,A2,A3,A4 - To store an address \
 Flag Register F1 - Gets set when CMP is true\
 Constant Register T1 - To store constant numbers\
 
+### Memory ###
+There is the program memory and the system memory which are termed as FLASH and RAM respectively within the RISC class. the size of the RAM is currently set as 100. the size of the FLASH is 100 lines of assembly code as well. this can wasily be changed.
+
 ### Code ###
 A class has been designed called RISC in the file "RISC.h" and "RISC.cpp" which can be used to emulate the system
 The function 
