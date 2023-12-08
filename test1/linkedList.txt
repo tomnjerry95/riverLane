@@ -1,0 +1,10 @@
+LOAD R1,1 #Value to store in the first element
+STORE R1,[0]
+LOAD R1,5 #address of next element
+STORE R1,[1] #Stored initial Values
+LOAD R1,[1] #Read address of next element
+LOAD R2,5 #Value to be stored in next eleemnt
+SUB R1,R1,1 #Find the element right before this
+STORE R2,[R1]
+HALT
+

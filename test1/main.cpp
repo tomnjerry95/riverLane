@@ -38,7 +38,7 @@ void RemoveComments(string& line) {
 uint8_t LoadCode(string* code)
 {
 	int i = 0;
-	ifstream file("code.txt");
+	ifstream file("fibbonacci.txt");
 	if (file.is_open())
 	{
 		while (!file.eof())

@@ -20,9 +20,9 @@ RISC::RISC(int* _ram, string* _flash, int codeSize)
 }
 /**
  * Function to find the operation from the string
- * 
+ *
  * \param operationString String of the operation
- * \return 
+ * \return
  */
 int RISC::GetOperationFromString(string operationString)
 {
@@ -63,6 +63,22 @@ int RISC::GetOperationFromString(string operationString)
 	{
 		_operationNum = DEBUG;
 	}
+	else if (operationString.compare("MUL") == 0)
+	{
+		_operationNum = MUL;
+	}
+	else if (operationString.compare("DIV") == 0)
+	{
+		_operationNum = DIV;
+	}
+	else if (operationString.compare("NCMP") == 0)
+	{
+		_operationNum = DIV;
+	}
+	else if (operationString.compare("NJMP") == 0)
+	{
+		_operationNum = DIV;
+	}
 	else
 	{
 		_operationNum = NOP;
@@ -102,7 +118,7 @@ int RISC::ParseInstruction(string textToParse)
 }
 /**
  * Get the operand from the String.
- * 
+ *
  * \param opString String of operand
  * \param operandPtr	Returns a pointer that points to the Specific register in the machine
  */
@@ -191,7 +207,7 @@ void RISC::GetOperands(string opString, int** operandPtr)
 
 /**
  * Executes the instructions provided in the arguments.
- * 
+ *
  * \param instruction The operation as a string
  * \param op1String	Operand 1 as a string
  * \param op2String	Operand 2 as a string
@@ -226,6 +242,22 @@ void RISC::ExecuteInstruction(string instruction, string op1String, string op2St
 		*op1 = *op2 - *op3;
 		PC++;
 		break;
+	case MUL:
+		//For SUbtraction operation. Eg. SUB R1,R2,R3 => R1 = R2-R3
+		GetOperands(op1String, &op1);
+		GetOperands(op2String, &op2);
+		GetOperands(op3String, &op3);
+		*op1 = *op2 * *op3;
+		PC++;
+		break;
+	case DIV:
+		//For SUbtraction operation. Eg. SUB R1,R2,R3 => R1 = R2-R3
+		GetOperands(op1String, &op1);
+		GetOperands(op2String, &op2);
+		GetOperands(op3String, &op3);
+		*op1 = *op2 / *op3;
+		PC++;
+		break;
 	case STORE:
 		//For load operation, eg. LOAD R1,10 , we need to load a value from memory location 10 ro 
 		GetOperands(op1String, &op1);
@@ -239,7 +271,18 @@ void RISC::ExecuteInstruction(string instruction, string op1String, string op2St
 		GetOperands(op3String, &op3);
 		if (*op1 == *op2)
 		{
-			PC = *op3-1;
+			PC = *op3 - 1;
+		}
+		else
+			PC++;
+		break;
+	case NJMP:
+		GetOperands(op1String, &op1);
+		GetOperands(op2String, &op2);
+		GetOperands(op3String, &op3);
+		if (*op1 != *op2)
+		{
+			PC = *op3 - 1;
 		}
 		else
 			PC++;
@@ -254,7 +297,20 @@ void RISC::ExecuteInstruction(string instruction, string op1String, string op2St
 		{
 			F1 = 1; //Set Flag
 		} //This needs to be cleared if F1 is used again
-		else		
+		else
+		{
+			F1 = 0; //Set Flag
+		} //This needs to be cleared if F1 is used again
+		PC++;
+		break;
+	case NCMP:
+		GetOperands(op1String, &op1);
+		GetOperands(op2String, &op2);
+		if (*op1 != *op2)
+		{
+			F1 = 1; //Set Flag
+		} //This needs to be cleared if F1 is used again
+		else
 		{
 			F1 = 0; //Set Flag
 		} //This needs to be cleared if F1 is used again
@@ -262,7 +318,7 @@ void RISC::ExecuteInstruction(string instruction, string op1String, string op2St
 		break;
 	case DEBUG:
 		GetOperands(op1String, &op1);
-		cout << "Value is:"<< * op1<<endl;
+		cout << "Value is:" << *op1 << endl;
 		PC++;
 		break;
 	case NOP:
@@ -275,26 +331,26 @@ void RISC::ExecuteInstruction(string instruction, string op1String, string op2St
 }
 /**
  * The main siimulation code that runs the machine.
- * 
+ *
  */
 void RISC::SimulateMachine()
 {
-	while(PC!= 10000)
+	while (PC != 10000)
 		ParseInstruction(FLASH[PC]);
 }
 void RISC::printRegisters()
 {
-	cout << "R1: " << R1 << " R2: " << R2 << " R3: "<<R3<<" F1: " << F1<<endl;
+	cout << "R1: " << R1 << " R2: " << R2 << " R3: " << R3 << " F1: " << F1 << endl;
 
 }
 /**
  * API To Print memory in the RAM.
- * 
+ *
  */
 void RISC::PrintMemory()
 {
 	for (int i = 0;i < RAM_SIZE;i++)
 	{
-		cout << RAM[i]<<" ";
+		cout << RAM[i] << " ";
 	}
 }

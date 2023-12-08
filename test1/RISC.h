@@ -12,7 +12,11 @@ enum instructions {
 	JMP,
 	CMP,
 	HALT,
-	DEBUG
+	DEBUG,
+	MUL,
+	DIV,
+	NCMP,
+	NJMP
 };
 const int RAM_SIZE = 100;
 /**

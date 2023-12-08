@@ -132,8 +132,9 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="code.txt" />
+    <Text Include="fibbonacci.txt" />
     <Text Include="code1.txt" />
+    <Text Include="linkedList.txt" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="RISC.h" />
